@@ -14,20 +14,51 @@ npm run build
 ## Before you launch
 
 Everything below lives in [`src/lib/site.js`](src/lib/site.js) — one file, one
-source of truth. **These are placeholders. Verify all of them.**
+source of truth.
 
 | Field | Current value | Note |
 | --- | --- | --- |
-| `address` | 16 West Main Street, Wickford, RI 02852 | Believed correct — confirm. |
-| `phone` | (401) 555-0100 | Fictional. `555-01xx` is the reserved range. |
-| `email` | hello@tavernbytheseari.com | Not registered. |
-| `social` | placeholder URLs | Point at the real profiles. |
-| `hours` | Mon–Sun | Confirm, including seasonal patio hours. |
-| `metadataBase` | `https://tavernbytheseari.com` | In `src/app/layout.js`. Set to the real domain. |
+| `address` | 16 West Main Street, Wickford, RI 02852 | Confirmed against Toast & OpenTable slugs. |
+| `phone` | (401) 294-5771 | From the restaurant's live site. Confirm. |
+| `hours` | Closed Mon · Tue–Sat 11:30–20:30 · Sun 11:30–16:00 | From the OpenTable listing (Jul 2026). Confirm, esp. seasonal patio hours. |
+| `email` / `careersEmail` | @tavernbytheseari.com | **Placeholders** — not registered. Set to real inboxes. |
+| `social` | placeholder URLs | Point at the real Instagram/Facebook. |
+| `siteUrl` | `https://tavernbytheseari.com` | Drives metadataBase, canonicals, sitemap, robots. Set to the real domain. |
 
-Set `reservationsUrl` to an OpenTable/Resy link and every **Call to Reserve**
-button becomes **Reserve a Table** and points at the booking flow. Until then it
-is a `tel:` link, so it is never a dead button.
+The OpenTable `rid` (`1098700`) and all Toast links (gift cards, rewards,
+online ordering) in `external` are the restaurant's real ones, read from its
+current site. When `site.hours` changes, update `site.openingHoursSpec`
+alongside it — the JSON-LD reads the latter and the two must not drift.
+
+## Reservations, gift cards, ordering
+
+- **`/reservations`** embeds the OpenTable widget ([`OpenTableWidget.jsx`](src/components/OpenTableWidget.jsx))
+  keyed by `external.openTable.rid`. If the widget is blocked (ad blockers,
+  strict tracking protection) it falls back to a "Book on OpenTable" link after
+  6 seconds instead of leaving a blank box.
+- **`/gift-cards`** links out to Toast for buying cards, checking a balance,
+  joining rewards, and looking up points, plus an Order Online band.
+- **Order Online** and **Reserve** are header buttons; the Toast/OpenTable
+  links also live in the footer's "Order & Gift" column.
+
+## Careers form
+
+[`/careers`](src/app/careers/page.js) has an application form that emails each
+submission via **Resend**, with an optional PDF résumé attached (no file
+storage — the PDF rides along in the email).
+
+- Copy [`.env.example`](.env.example) to `.env.local` and set `RESEND_API_KEY`
+  (plus `CAREERS_TO` / `CAREERS_FROM`). **The `CAREERS_FROM` domain must be
+  verified in Resend or sends fail.**
+- Until the key is set, the form renders but tells applicants up front it can't
+  deliver and points them at the email/phone — it never silently drops an
+  application. The page is `force-dynamic` so adding the key later takes effect
+  without a rebuild.
+- Validation runs in the Server Action ([`actions.js`](src/app/careers/actions.js)):
+  zod + a PDF magic-byte check (a file lying about its MIME type is rejected),
+  subject-line header-injection scrubbing, and a `_gotcha` honeypot. On a
+  validation error the applicant's typed values, selects and file are preserved
+  (React 19 otherwise resets the form).
 
 ## Photos
 
@@ -66,21 +97,42 @@ There are **no photographic backgrounds behind text**, deliberately. What exists
 Hero type is opaque on purpose. At 11px over a photograph, translucent text blends toward
 whatever is behind it and destroys its own contrast — hierarchy comes from size and tracking.
 
-### Known contrast debt
+### Contrast
 
-Independent of the above, some small text on light backgrounds is already below WCAG AA
-and was left alone rather than silently restyle the brand:
+Text is held to WCAG AA (4.5:1 for body, 3:1 for large/icons), verified by
+sampling the actual composited pixels — including hero copy over the photograph.
+Two decisions that keep it there:
 
-| Text | Ratio | Needs |
-| --- | --- | --- |
-| `brass` eyebrows on cream | 2.92 | 4.5 |
-| `brass` eyebrows on sand | 2.50 | 4.5 |
-| `ink/45` eyebrows, `ink/40` price `$` | 2.65 / 2.34 | 4.5 |
-| `ink/55` menu descriptions | 3.46 | 4.5 |
-| `ink/50` hours note | 3.02 | 4.5 |
+- `brass` was darkened from `#b98a45` (2.9:1, failing) to **`#946322`** (4.9:1
+  on cream). It carries every small eyebrow label and icon, which were the
+  lowest-contrast marks on the site.
+- Faint body/label text sits at `ink/70` or darker (5.2:1+); the old
+  `ink/40`–`ink/55` steps all failed. If you add new muted text, `/70` is the
+  floor on cream and sand.
 
-Fixing means darkening `brass` (or reserving it for large display accents) and lifting the
-`ink/xx` steps. Worth doing before launch.
+## Search & social (SEO)
+
+Driven off `siteUrl` and the `site` config, so updating those keeps SEO in sync.
+
+- **Per-page metadata** — unique `<title>`, description, and self-referencing
+  canonical on every route (`title.template` in `layout.js` appends the brand).
+- **Structured data** — a full `Restaurant` JSON-LD block in `layout.js`:
+  address, **geo coordinates**, `openingHoursSpecification` (Monday omitted =
+  closed), `servesCuisine`, `priceRange`, `hasMenu`, `acceptsReservations` +
+  a `ReserveAction` to OpenTable, `hasMap`, `areaServed`, and `sameAs` (only
+  **verified** profiles — placeholder socials are filtered out).
+- **Social cards** — a branded 1200×630 image generated by
+  [`opengraph-image.js`](src/app/opengraph-image.js) (no design asset needed),
+  reused for Twitter via [`twitter-image.js`](src/app/twitter-image.js). Every
+  page inherits it; `og:title` is per-page.
+- **`sitemap.xml`** and **`robots.txt`** are generated routes;
+  `robots` metadata sets `max-image-preview:large`.
+- **One `<h1>` per page**, including the home hero (the logo wordmark renders as
+  `<h1>` via `Logo wordmarkAs="h1"`).
+
+Before launch, the SEO that still needs real values: `siteUrl` (production
+domain), the Instagram URL (excluded from `sameAs` until set), and confirming
+the `site.geo` pin against the Google Business Profile.
 
 ## The logo
 
@@ -106,16 +158,24 @@ Palette (defined as Tailwind theme tokens in `src/app/globals.css`):
 | `seafoam` | `#9bd0d9` | the old sign's light teal, now an accent |
 | `cream` | `#fbf8f2` | page background |
 | `sand` | `#efe6d3` | alternating sections |
-| `brass` | `#b98a45` | eyebrows, rules, small accents |
+| `brass` | `#946322` | eyebrows, rules, small accents (darkened for AA) |
 
 ## Structure
 
 ```
 src/
-  app/          route per page + icon.svg + not-found
-  components/   Header, Footer, Logo, Photo, PageHero, Reveal, ui
-  lib/          site.js (config) · menu.js (dishes) · photos.js (resolver)
+  app/          route per page (home, menu, patios, story, reservations,
+                gift-cards, careers, contact) + careers/actions.js (Server
+                Action) + icon.svg, not-found, sitemap.js, robots.js
+  components/   Header, Footer, Logo, Photo, PageHero, Reveal, ui,
+                OpenTableWidget, ApplicationForm
+  lib/          site.js (config + external links) · menu.js (dishes) ·
+                careers.js (form options) · photos.js (image resolver)
 ```
 
 The menu is data, not markup — edit [`src/lib/menu.js`](src/lib/menu.js) and both
 the menu page and its jump-nav update. A `price` of `null` renders as *market*.
+
+Routes are static except `/careers` (dynamic, to read the Resend env flag at
+request time). `sitemap.js` lists all eight pages; keep it in sync when adding
+routes.

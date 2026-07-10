@@ -246,7 +246,7 @@ export default function ApplicationForm({ configured, careersEmail, phone }) {
             </span>
             <button
               type="button" onClick={clearFile}
-              className="shrink-0 rounded-full p-1 text-ink/50 transition-colors hover:bg-ink/5 hover:text-ink"
+              className="shrink-0 rounded-full p-1 text-ink/70 transition-colors hover:bg-ink/5 hover:text-ink"
               aria-label={`Remove ${resumeName}`}
             >
               <X size={16} />

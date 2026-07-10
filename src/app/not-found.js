@@ -10,7 +10,7 @@ export default function NotFound() {
         <ScallopMark className="mx-auto h-12 w-12 text-brand/40" />
         <p className="eyebrow mt-8 text-brass">404</p>
         <h1 className="font-display mt-4 text-4xl tracking-tight sm:text-5xl">This page slipped its mooring</h1>
-        <p className="mx-auto mt-5 max-w-md leading-relaxed text-ink/60 text-pretty">
+        <p className="mx-auto mt-5 max-w-md leading-relaxed text-ink/70 text-pretty">
           Whatever you were looking for is not here. The patios, happily, still are.
         </p>
         <div className="mt-10 flex flex-wrap justify-center gap-4">

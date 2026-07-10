@@ -8,7 +8,9 @@
   --color-seafoam-soft: #cfe6ea;
   --color-sand: #efe6d3;
   --color-cream: #fbf8f2;
-  --color-brass: #b98a45;
+  /* Darkened from #b98a45 (2.9:1) to clear WCAG AA on cream and sand: small
+     eyebrow labels and icons are the lowest-contrast marks on the site. */
+  --color-brass: #946322;
 
   --font-display: var(--font-cormorant), Georgia, "Times New Roman", serif;
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;

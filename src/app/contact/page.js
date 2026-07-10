@@ -27,7 +27,7 @@ export default function ContactPage() {
 
             <dl className="mt-12 space-y-9">
               <div>
-                <dt className="eyebrow flex items-center gap-3 text-ink/45">
+                <dt className="eyebrow flex items-center gap-3 text-ink/70">
                   <MapPin className="shrink-0 text-brass" size={18} aria-hidden />
                   Address
                 </dt>
@@ -41,7 +41,7 @@ export default function ContactPage() {
               </div>
 
               <div>
-                <dt className="eyebrow flex items-center gap-3 text-ink/45">
+                <dt className="eyebrow flex items-center gap-3 text-ink/70">
                   <Phone className="shrink-0 text-brass" size={18} aria-hidden />
                   Reservations
                 </dt>
@@ -49,14 +49,14 @@ export default function ContactPage() {
                   <a href={site.phoneHref} className="text-lg hover:text-brand">
                     {site.phone}
                   </a>
-                  <p className="mt-1 text-sm text-ink/50">
+                  <p className="mt-1 text-sm text-ink/70">
                     Parties of six or more, please call. The bar is walk-in only.
                   </p>
                 </dd>
               </div>
 
               <div>
-                <dt className="eyebrow flex items-center gap-3 text-ink/45">
+                <dt className="eyebrow flex items-center gap-3 text-ink/70">
                   <Mail className="shrink-0 text-brass" size={18} aria-hidden />
                   Email
                 </dt>
@@ -68,7 +68,7 @@ export default function ContactPage() {
               </div>
 
               <div>
-                <dt className="eyebrow flex items-center gap-3 text-ink/45">
+                <dt className="eyebrow flex items-center gap-3 text-ink/70">
                   <Clock className="shrink-0 text-brass" size={18} aria-hidden />
                   Hours
                 </dt>
@@ -78,7 +78,7 @@ export default function ContactPage() {
                       <span className="text-ink">{h.days}</span> · {h.time}
                     </p>
                   ))}
-                  <p className="pt-2 text-sm text-ink/50 text-pretty">{site.hoursNote}</p>
+                  <p className="pt-2 text-sm text-ink/70 text-pretty">{site.hoursNote}</p>
                 </dd>
               </div>
             </dl>

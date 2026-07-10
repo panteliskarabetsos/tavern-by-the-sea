@@ -1,9 +1,18 @@
 // Single source of truth for everything that shows up in more than one place.
+
+// TODO(owner): set to the real production domain before launch. Drives
+// metadataBase, canonicals, the sitemap and robots.txt.
+export const siteUrl = "https://tavernbytheseari.com";
+
 export const site = {
   name: "Tavern by the Sea",
   tagline: "Mediterranean cooking on the water",
   established: 2006,
   town: "Wickford, Rhode Island",
+
+  tag: "Seafood & Mediterranean Restaurant", // how the restaurant styles itself
+  cuisine: ["Mediterranean", "Seafood", "Greek"],
+  priceRange: "$$$",
 
   // Wickford is a village within North Kingstown — both names are correct, and
   // the OpenTable and Toast slugs use "north-kingstown" / the street address.
@@ -16,6 +25,10 @@ export const site = {
     country: "US",
   },
 
+  // Approx coordinates for 16 West Main Street from a public-records geocode.
+  // TODO(owner): fine-tune against the exact Google Business Profile pin.
+  geo: { latitude: 41.5713, longitude: -71.4527 },
+
   phone: "(401) 294-5771",
   phoneHref: "tel:+14012945771",
   email: "hello@tavernbytheseari.com", // TODO(owner): confirm — not verified.
@@ -23,7 +36,7 @@ export const site = {
 
   social: {
     instagram: "https://www.instagram.com/",
-    facebook: "https://www.facebook.com/",
+    facebook: "https://www.facebook.com/TavernByTheSea/",
   },
 
   // Hours read off the restaurant's OpenTable listing, July 2026. Seasonal —

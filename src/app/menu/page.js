@@ -14,10 +14,10 @@ export const metadata = {
 const sections = [...menu, ...drinks];
 
 function Price({ value }) {
-  if (value == null) return <span className="italic text-ink/45">market</span>;
+  if (value == null) return <span className="italic text-ink/70">market</span>;
   return (
     <span>
-      <span className="text-ink/40">$</span>
+      <span className="text-ink/70">$</span>
       {value}
     </span>
   );
@@ -29,7 +29,7 @@ function MenuSection({ section }) {
       <header>
         <h2 className="font-display text-4xl tracking-tight sm:text-5xl">{section.title}</h2>
         <Wave className="mt-4 h-2 w-16 text-brass/70" />
-        {section.blurb && <p className="mt-4 max-w-xl text-ink/60 text-pretty">{section.blurb}</p>}
+        {section.blurb && <p className="mt-4 max-w-xl text-ink/70 text-pretty">{section.blurb}</p>}
       </header>
 
       <ul className="mt-10 space-y-7">
@@ -38,7 +38,7 @@ function MenuSection({ section }) {
             <div className="flex items-baseline gap-4">
               <h3 className="font-display text-2xl leading-none">{item.name}</h3>
               {item.tag && (
-                <span className="eyebrow rounded-full bg-brass/12 px-2.5 py-1 text-[9px] text-brass">
+                <span className="eyebrow rounded-full bg-brass px-2.5 py-1 text-[9px] text-cream">
                   {item.tag}
                 </span>
               )}
@@ -47,7 +47,7 @@ function MenuSection({ section }) {
                 <Price value={item.price} />
               </span>
             </div>
-            {item.desc && <p className="mt-2 max-w-xl text-[15px] leading-relaxed text-ink/55">{item.desc}</p>}
+            {item.desc && <p className="mt-2 max-w-xl text-[15px] leading-relaxed text-ink/70">{item.desc}</p>}
           </li>
         ))}
       </ul>
@@ -69,11 +69,11 @@ export default function MenuPage() {
         <div className="grid gap-16 lg:grid-cols-[200px_1fr] lg:gap-20">
           {/* Sticky in-page nav */}
           <nav aria-label="Menu sections" className="lg:sticky lg:top-32 lg:self-start">
-            <p className="eyebrow text-ink/40">Jump to</p>
+            <p className="eyebrow text-ink/70">Jump to</p>
             <ul className="mt-5 flex flex-wrap gap-x-5 gap-y-3 lg:flex-col lg:gap-3">
               {sections.map((s) => (
                 <li key={s.id}>
-                  <a href={`#${s.id}`} className="text-ink/60 transition-colors hover:text-brand">
+                  <a href={`#${s.id}`} className="text-ink/70 transition-colors hover:text-brand">
                     {s.title}
                   </a>
                 </li>
@@ -103,7 +103,7 @@ export default function MenuPage() {
             ))}
 
             <Reveal>
-              <p className="border-t border-ink/10 pt-8 text-sm leading-relaxed text-ink/50 text-pretty">
+              <p className="border-t border-ink/10 pt-8 text-sm leading-relaxed text-ink/70 text-pretty">
                 {menuNote}
               </p>
               <div className="mt-10">

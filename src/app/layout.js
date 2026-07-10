@@ -2,7 +2,7 @@ import { Cormorant_Garamond, Inter } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { site, external, addressLine } from "@/lib/site";
+import { site, external, addressLine, siteUrl, mapsLinkUrl } from "@/lib/site";
 
 const cormorant = Cormorant_Garamond({
   variable: "--font-cormorant",
@@ -18,33 +18,66 @@ const inter = Inter({
 });
 
 export const metadata = {
-  metadataBase: new URL("https://tavernbytheseari.com"),
+  metadataBase: new URL(siteUrl),
   title: {
     default: `${site.name} — ${site.tagline} in ${site.town}`,
     template: `%s · ${site.name}`,
   },
   description: `Mediterranean cuisine on the water in Wickford, Rhode Island since 2006. Two waterfront patios, a full bar, and fish landed at Point Judith.`,
+  keywords: [
+    "Tavern by the Sea",
+    "Wickford restaurant",
+    "Mediterranean restaurant Rhode Island",
+    "waterfront dining Wickford",
+    "seafood restaurant North Kingstown",
+    "restaurants in Wickford RI",
+  ],
+  // No `title` here — omitting it lets each page's own <title> become its
+  // og:title, so sharing /menu reads "Menu", not the homepage tagline.
   openGraph: {
     type: "website",
     locale: "en_US",
+    url: siteUrl,
     siteName: site.name,
-    title: `${site.name} — ${site.tagline}`,
-    description: `Waterfront Mediterranean dining in ${site.town}. Est. ${site.established}.`,
+    description: `Waterfront Mediterranean & seafood dining in ${site.town}. Est. ${site.established}.`,
+  },
+  twitter: {
+    card: "summary_large_image",
+    description: `Waterfront Mediterranean & seafood dining in ${site.town}.`,
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-image-preview": "large" },
   },
   // No `alternates` here on purpose. App Router inherits metadata from parent
   // segments, so a root canonical of "/" would stamp every page as a duplicate
   // of the homepage. Each route declares its own.
 };
 
-// Rich result for local search — Google reads this for hours, address and menu.
+// Rich result for local search — Google reads this for hours, address, geo and
+// menu. Only real, verified links go in `sameAs`; placeholders are excluded so
+// we never point search engines at a dead profile.
+const sameAs = [
+  site.social.facebook,
+  external.openTable.url,
+  external.orderOnline,
+].filter((u) => u && !/instagram\.com\/?$|facebook\.com\/?$/.test(u));
+
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "Restaurant",
+  "@id": `${siteUrl}/#restaurant`,
   name: site.name,
-  servesCuisine: "Mediterranean",
-  priceRange: "$$$",
+  url: siteUrl,
+  image: [`${siteUrl}/images/hero-aerial.jpg`],
+  description: `Mediterranean and seafood cooking on the water in ${site.town} since ${site.established}. Two waterfront patios, a full bar, and fish landed at Point Judith.`,
+  servesCuisine: site.cuisine,
+  priceRange: site.priceRange,
   telephone: site.phone,
   email: site.email,
+  currenciesAccepted: "USD",
+  foundingDate: String(site.established),
   address: {
     "@type": "PostalAddress",
     streetAddress: site.address.street,
@@ -53,11 +86,31 @@ const jsonLd = {
     postalCode: site.address.postalCode,
     addressCountry: site.address.country,
   },
-  openingHours: site.openingHoursSpec,
-  hasMenu: "/menu",
-  foundingDate: String(site.established),
-  description: `Mediterranean cooking on the water at ${addressLine}.`,
-  acceptsReservations: external.openTable.url,
+  geo: {
+    "@type": "GeoCoordinates",
+    latitude: site.geo.latitude,
+    longitude: site.geo.longitude,
+  },
+  hasMap: mapsLinkUrl,
+  areaServed: ["Wickford", "North Kingstown", "Narragansett", "South County, Rhode Island"],
+  // Monday is intentionally omitted — days not listed read as closed.
+  openingHoursSpecification: [
+    {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: ["Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+      opens: "11:30",
+      closes: "20:30",
+    },
+    {
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: "Sunday",
+      opens: "11:30",
+      closes: "16:00",
+    },
+  ],
+  hasMenu: `${siteUrl}/menu`,
+  acceptsReservations: true,
+  sameAs,
   potentialAction: {
     "@type": "ReserveAction",
     target: {

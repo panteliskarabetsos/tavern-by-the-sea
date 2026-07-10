@@ -99,7 +99,7 @@ export default function PatiosPage() {
 
                 <ul className="mt-8 flex flex-wrap gap-x-3 gap-y-2">
                   {space.facts.map((f) => (
-                    <li key={f} className="eyebrow rounded-full border border-ink/15 px-4 py-2 text-ink/55">
+                    <li key={f} className="eyebrow rounded-full border border-ink/15 px-4 py-2 text-ink/70">
                       {f}
                     </li>
                   ))}

@@ -23,16 +23,19 @@ export function ScallopMark({ className = "", title }) {
 /**
  * The full lockup. `stacked` centres the mark above the wordmark (hero, footer);
  * the default sits them side by side (header).
+ *
+ * `wordmarkAs="h1"` renders the wordmark as the page heading — pass it once per
+ * page (the home hero) so the site's most important page has a real <h1>.
  */
-export function Logo({ stacked = false, showTown = true, className = "" }) {
+export function Logo({ stacked = false, showTown = true, wordmarkAs: Wordmark = "span", className = "" }) {
   if (stacked) {
     return (
       <span className={`flex flex-col items-center gap-4 ${className}`}>
         <ScallopMark className="w-14 h-14" />
         <span className="flex flex-col items-center gap-2.5">
-          <span className="font-display uppercase leading-none tracking-[0.16em] text-[clamp(1.75rem,5.5vw,3.25rem)]">
+          <Wordmark className="font-display uppercase leading-none tracking-[0.16em] text-[clamp(1.75rem,5.5vw,3.25rem)]">
             Tavern by the Sea
-          </span>
+          </Wordmark>
           <Wave className="w-24 h-2 opacity-60" />
           {/* Opaque on purpose: at 11px over a photograph, translucent type blends
               toward whatever is behind it and loses its own contrast. */}

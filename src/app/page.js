@@ -55,7 +55,7 @@ export default function Home() {
 
         <div className="relative z-10 px-6 text-center text-cream">
           <Reveal y={16}>
-            <Logo stacked />
+            <Logo stacked wordmarkAs="h1" />
           </Reveal>
           <Reveal delay={0.15}>
             <p className="mx-auto mt-8 max-w-xl text-lg leading-relaxed text-cream text-pretty">
@@ -72,7 +72,7 @@ export default function Home() {
           </Reveal>
         </div>
 
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 text-cream/50">
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 text-cream/70">
           <Wave className="h-3 w-16 animate-pulse" />
         </div>
       </section>
@@ -182,7 +182,7 @@ export default function Home() {
 
             <dl className="mt-10 space-y-8">
               <div>
-                <dt className="eyebrow flex items-center gap-3 text-ink/50">
+                <dt className="eyebrow flex items-center gap-3 text-ink/70">
                   <MapPin className="shrink-0 text-brass" size={18} aria-hidden />
                   Address
                 </dt>
@@ -194,7 +194,7 @@ export default function Home() {
               </div>
 
               <div>
-                <dt className="eyebrow flex items-center gap-3 text-ink/50">
+                <dt className="eyebrow flex items-center gap-3 text-ink/70">
                   <Clock className="shrink-0 text-brass" size={18} aria-hidden />
                   Hours
                 </dt>
@@ -204,7 +204,7 @@ export default function Home() {
                       <span className="text-ink">{h.days}</span> · {h.time}
                     </p>
                   ))}
-                  <p className="pt-2 text-sm text-ink/50 text-pretty">{site.hoursNote}</p>
+                  <p className="pt-2 text-sm text-ink/70 text-pretty">{site.hoursNote}</p>
                 </dd>
               </div>
             </dl>
@@ -239,7 +239,7 @@ export default function Home() {
           <p className="font-display mx-auto mt-8 max-w-3xl text-3xl leading-snug text-balance sm:text-4xl">
             &ldquo;The best seat in Wickford, and the kitchen knows it.&rdquo;
           </p>
-          <p className="eyebrow mt-6 text-ink/45">A regular, since the first summer</p>
+          <p className="eyebrow mt-6 text-ink/70">A regular, since the first summer</p>
         </Reveal>
       </Section>
     </>

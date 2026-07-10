@@ -131,7 +131,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <p className="mt-16 border-t border-cream/15 pt-8 text-center text-xs text-cream/50">
+        <p className="mt-16 border-t border-cream/15 pt-8 text-center text-xs text-cream/70">
           © {new Date().getFullYear()} {site.name} · {addressLine}
         </p>
       </div>
