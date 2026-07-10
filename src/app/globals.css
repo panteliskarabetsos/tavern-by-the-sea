@@ -1,26 +1,159 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  --color-ink: #0b2e33;
+  --color-brand: #14606b;
+  --color-brand-deep: #0f4a53;
+  --color-seafoam: #9bd0d9;
+  --color-seafoam-soft: #cfe6ea;
+  --color-sand: #efe6d3;
+  --color-cream: #fbf8f2;
+  --color-brass: #b98a45;
+
+  --font-display: var(--font-cormorant), Georgia, "Times New Roman", serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    /* keep sticky headers from covering anchored sections */
+    scroll-padding-top: 6rem;
+  }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  body {
+    background-color: var(--color-cream);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background-color: var(--color-seafoam);
+    color: var(--color-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-brand);
+    outline-offset: 3px;
+    border-radius: 2px;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+@utility eyebrow {
+  font-size: 0.6875rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+/* A hairline rule with a scallop-teal fade — used under section headings. */
+@utility rule-fade {
+  background-image: linear-gradient(
+    to right,
+    color-mix(in oklab, var(--color-brand) 45%, transparent),
+    transparent
+  );
+}
+
+/*
+ * Hero scrim. A plain top-to-bottom gradient leaves the middle band too light,
+ * and that is exactly where centred hero copy lands — over the white umbrellas
+ * the lede measured 2.0:1. The radial pass darkens behind the copy only.
+ * Values sampled against the real photograph: worst-case ratios are wordmark
+ * 3.79 (needs 3), lede 4.74 and button 5.37 (need 4.5). Widening the ellipse
+ * beats deepening it — it spends less of the picture to buy the same contrast.
+ */
+@utility hero-scrim {
+  background-image:
+    radial-gradient(
+      ellipse 95% 70% at 50% 50%,
+      color-mix(in srgb, var(--color-ink) 65%, transparent),
+      transparent 85%
+    ),
+    linear-gradient(
+      to bottom,
+      color-mix(in srgb, var(--color-ink) 55%, transparent) 0%,
+      color-mix(in srgb, var(--color-ink) 22%, transparent) 45%,
+      color-mix(in srgb, var(--color-ink) 80%, transparent) 100%
+    );
+}
+
+/* Interior page heroes anchor their copy bottom-left, so weight the bottom. */
+@utility page-scrim {
+  background-image:
+    radial-gradient(
+      ellipse 80% 70% at 25% 85%,
+      color-mix(in srgb, var(--color-ink) 55%, transparent),
+      transparent 70%
+    ),
+    linear-gradient(
+      to top,
+      color-mix(in srgb, var(--color-ink) 85%, transparent) 0%,
+      color-mix(in srgb, var(--color-ink) 50%, transparent) 45%,
+      color-mix(in srgb, var(--color-ink) 35%, transparent) 100%
+    );
+}
+
+/*
+ * Paper tooth. One seamless 160px tile, desaturated so it shifts no contrast
+ * ratio, painted by a pseudo-element behind the content. The host element must
+ * already be positioned; `isolation` keeps z-index:-1 above its own background.
+ * Never used on the cream reading panels — grain on the lightest, most
+ * text-dense surface reads as a filter and erodes Cormorant's crispness.
+ */
+@utility grain {
+  isolation: isolate;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 160px 160px;
+    opacity: 0.04;
+    mix-blend-mode: multiply;
+  }
+}
+
+/* Same tile, inverted, for the dark teal panels. */
+@utility grain-light {
+  isolation: isolate;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 160px 160px;
+    opacity: 0.05;
+    mix-blend-mode: screen;
+  }
+}
+
+/* Lifts the centre of the flat teal panels so content has a ground to sit on. */
+@utility wash-deep {
+  background-image: radial-gradient(
+    120% 95% at 50% 0%,
+    color-mix(in srgb, var(--color-brand) 60%, transparent),
+    transparent 68%
+  );
+}
+
+/* Forced-colors strips background-image; no text depends on these for legibility. */
+@media (forced-colors: active) {
+  .grain::before,
+  .grain-light::before {
+    display: none;
+  }
 }
