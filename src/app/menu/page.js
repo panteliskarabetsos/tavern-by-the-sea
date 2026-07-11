@@ -3,15 +3,41 @@ import { Wave } from "@/components/Logo";
 import { ReserveButton, Section } from "@/components/ui";
 import PageHero from "@/components/PageHero";
 import { menu, drinks, menuNote } from "@/lib/menu";
+import { pageMeta, siteUrl } from "@/lib/site";
 
-export const metadata = {
-  title: "Menu",
+export const metadata = pageMeta({
+  title: "Menu — Mediterranean & Seafood",
   description:
     "Meze, fish from Point Judith, charcoal-grilled lamb, and a Greek-leaning wine list. The menu at Tavern by the Sea, Wickford, Rhode Island.",
-  alternates: { canonical: "/menu" },
-};
+  path: "/menu",
+});
 
 const sections = [...menu, ...drinks];
+
+// schema.org Menu built from the same data the page renders, so the structured
+// data can never drift from the visible menu. Dishes priced `null` (market
+// price) simply omit the offer rather than invent a number.
+const menuJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Menu",
+  "@id": `${siteUrl}/menu#menu`,
+  name: "Tavern by the Sea — Menu",
+  inLanguage: "en-US",
+  mainEntityOfPage: `${siteUrl}/menu`,
+  hasMenuSection: sections.map((section) => ({
+    "@type": "MenuSection",
+    name: section.title,
+    ...(section.blurb ? { description: section.blurb } : {}),
+    hasMenuItem: section.items.map((item) => ({
+      "@type": "MenuItem",
+      name: item.name,
+      ...(item.desc ? { description: item.desc } : {}),
+      ...(item.price != null
+        ? { offers: { "@type": "Offer", price: String(item.price), priceCurrency: "USD" } }
+        : {}),
+    })),
+  })),
+};
 
 function Price({ value }) {
   if (value == null) return <span className="italic text-ink/70">market</span>;
@@ -58,6 +84,10 @@ function MenuSection({ section }) {
 export default function MenuPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(menuJsonLd) }}
+      />
       <PageHero
         eyebrow="Kitchen & bar"
         title="The Menu"

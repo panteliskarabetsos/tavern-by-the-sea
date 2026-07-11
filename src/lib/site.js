@@ -30,6 +30,7 @@ export const site = {
   geo: { latitude: 41.5713, longitude: -71.4527 },
 
   phone: "(401) 294-5771",
+  phoneE164: "+1-401-294-5771", // machine-preferred form, used in structured data
   phoneHref: "tel:+14012945771",
   email: "hello@tavernbytheseari.com", // TODO(owner): confirm — not verified.
   careersEmail: "careers@tavernbytheseari.com", // TODO(owner): confirm.
@@ -81,6 +82,34 @@ export const addressLine = `${site.address.street}, ${site.address.locality}, ${
 export const mapsQuery = encodeURIComponent(`${site.name}, ${addressLine}`);
 export const mapsEmbedUrl = `https://www.google.com/maps?q=${mapsQuery}&output=embed`;
 export const mapsLinkUrl = `https://www.google.com/maps/search/?api=1&query=${mapsQuery}`;
+
+/**
+ * Per-page metadata in one call, so canonical, og:url and the social
+ * descriptions can never drift apart again.
+ *
+ * A page-level `openGraph` object REPLACES the root one wholesale (App Router
+ * metadata is not deep-merged), so this re-supplies type/locale/siteName —
+ * otherwise og:site_name would silently vanish from every page that sets its
+ * own og:url.
+ */
+export function pageMeta({ title, description, path }) {
+  return {
+    ...(title ? { title } : {}),
+    description,
+    alternates: { canonical: path },
+    openGraph: {
+      type: "website",
+      locale: "en_US",
+      siteName: site.name,
+      url: path,
+      description,
+    },
+    twitter: {
+      card: "summary_large_image",
+      description,
+    },
+  };
+}
 
 export const nav = [
   { href: "/menu", label: "Menu" },

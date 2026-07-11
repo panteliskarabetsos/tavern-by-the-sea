@@ -15,7 +15,8 @@ const routes = [
 
 export default function sitemap() {
   return routes.map(({ path, priority }) => ({
-    url: `${siteUrl}${path}`,
+    // "/" stays the bare host so the <loc> matches the rendered canonical.
+    url: path === "/" ? siteUrl : `${siteUrl}${path}`,
     changeFrequency: "monthly",
     priority,
   }));

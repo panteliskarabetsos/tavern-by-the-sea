@@ -4,10 +4,14 @@ import Photo from "@/components/Photo";
 import Reveal from "@/components/Reveal";
 import { Logo, ScallopMark, Wave } from "@/components/Logo";
 import { Button, ReserveButton, OrderButton, Section, SectionHeading } from "@/components/ui";
-import { site, addressLine, mapsLinkUrl, mapsEmbedUrl } from "@/lib/site";
+import { site, addressLine, mapsLinkUrl, mapsEmbedUrl, pageMeta } from "@/lib/site";
 import { photo } from "@/lib/photos";
 
-export const metadata = { alternates: { canonical: "/" } };
+export const metadata = pageMeta({
+  description:
+    "Mediterranean cuisine on the water in Wickford, Rhode Island since 2006. Two waterfront patios, a full bar, and fish landed at Point Judith.",
+  path: "/",
+});
 
 const patios = [
   {

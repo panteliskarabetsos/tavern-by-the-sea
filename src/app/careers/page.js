@@ -3,13 +3,13 @@ import PageHero from "@/components/PageHero";
 import Reveal from "@/components/Reveal";
 import ApplicationForm from "@/components/ApplicationForm";
 import { Section, SectionHeading } from "@/components/ui";
-import { site } from "@/lib/site";
+import { site, pageMeta } from "@/lib/site";
 
-export const metadata = {
+export const metadata = pageMeta({
   title: "Join Our Team",
   description: `Work at Tavern by the Sea in ${site.town}. Front of house, kitchen and bar roles on the water, since ${site.established}.`,
-  alternates: { canonical: "/careers" },
-};
+  path: "/careers",
+});
 
 const perks = [
   {

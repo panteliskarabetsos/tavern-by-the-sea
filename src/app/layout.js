@@ -20,7 +20,9 @@ const inter = Inter({
 export const metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: `${site.name} — ${site.tagline} in ${site.town}`,
+    // 58 chars — Google truncates around 60, and the old 82-char version lost
+    // "...Wickford, Rhode Island", which is the part local queries match on.
+    default: `${site.name} · Mediterranean & Seafood · Wickford, RI`,
     template: `%s · ${site.name}`,
   },
   description: `Mediterranean cuisine on the water in Wickford, Rhode Island since 2006. Two waterfront patios, a full bar, and fish landed at Point Judith.`,
@@ -74,7 +76,7 @@ const jsonLd = {
   description: `Mediterranean and seafood cooking on the water in ${site.town} since ${site.established}. Two waterfront patios, a full bar, and fish landed at Point Judith.`,
   servesCuisine: site.cuisine,
   priceRange: site.priceRange,
-  telephone: site.phone,
+  telephone: site.phoneE164,
   email: site.email,
   currenciesAccepted: "USD",
   foundingDate: String(site.established),
@@ -110,21 +112,43 @@ const jsonLd = {
   ],
   hasMenu: `${siteUrl}/menu`,
   acceptsReservations: true,
+  // Only features the site itself claims: the patios, the bar, Toast takeaway.
+  amenityFeature: [
+    { "@type": "LocationFeatureSpecification", name: "Outdoor waterfront seating", value: true },
+    { "@type": "LocationFeatureSpecification", name: "Full bar", value: true },
+    { "@type": "LocationFeatureSpecification", name: "Takeout", value: true },
+  ],
   sameAs,
-  potentialAction: {
-    "@type": "ReserveAction",
-    target: {
-      "@type": "EntryPoint",
-      urlTemplate: external.openTable.url,
-      inLanguage: "en-US",
-      actionPlatform: [
-        "http://schema.org/DesktopWebPlatform",
-        "http://schema.org/IOSPlatform",
-        "http://schema.org/AndroidPlatform",
-      ],
+  potentialAction: [
+    {
+      "@type": "ReserveAction",
+      target: {
+        "@type": "EntryPoint",
+        urlTemplate: external.openTable.url,
+        inLanguage: "en-US",
+        actionPlatform: [
+          "http://schema.org/DesktopWebPlatform",
+          "http://schema.org/IOSPlatform",
+          "http://schema.org/AndroidPlatform",
+        ],
+      },
+      result: { "@type": "FoodEstablishmentReservation", name: `Reserve at ${site.name}` },
     },
-    result: { "@type": "FoodEstablishmentReservation", name: `Reserve at ${site.name}` },
-  },
+    {
+      "@type": "OrderAction",
+      deliveryMethod: ["http://purl.org/goodrelations/v1#DeliveryModePickUp"],
+      target: {
+        "@type": "EntryPoint",
+        urlTemplate: external.orderOnline,
+        inLanguage: "en-US",
+        actionPlatform: [
+          "http://schema.org/DesktopWebPlatform",
+          "http://schema.org/IOSPlatform",
+          "http://schema.org/AndroidPlatform",
+        ],
+      },
+    },
+  ],
 };
 
 export default function RootLayout({ children }) {

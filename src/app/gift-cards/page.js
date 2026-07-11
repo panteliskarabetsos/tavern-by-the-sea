@@ -3,13 +3,13 @@ import PageHero from "@/components/PageHero";
 import Reveal from "@/components/Reveal";
 import { ScallopMark } from "@/components/Logo";
 import { Button, OrderButton, Section, SectionHeading } from "@/components/ui";
-import { site, external } from "@/lib/site";
+import { site, external, pageMeta } from "@/lib/site";
 
-export const metadata = {
+export const metadata = pageMeta({
   title: "Gift Cards & Rewards",
   description: `Buy a Tavern by the Sea gift card, check a balance, or join the rewards programme. Waterfront Mediterranean dining in ${site.town}.`,
-  alternates: { canonical: "/gift-cards" },
-};
+  path: "/gift-cards",
+});
 
 const cards = [
   {
@@ -38,8 +38,8 @@ export default function GiftCardsPage() {
   return (
     <>
       <PageHero
-        eyebrow="Gift cards & rewards"
-        title="Come back again"
+        eyebrow="Come back again"
+        title="Gift Cards & Rewards"
         blurb="A gift card for someone who loves this water, and a rewards programme for those who never left."
         src="/images/bar.jpg"
       />

@@ -2,13 +2,13 @@ import { MapPin, Phone, Mail, Clock, Car, Users } from "lucide-react";
 import Reveal from "@/components/Reveal";
 import PageHero from "@/components/PageHero";
 import { ReserveButton, Section, SectionHeading } from "@/components/ui";
-import { site, addressLine, mapsEmbedUrl, mapsLinkUrl } from "@/lib/site";
+import { site, addressLine, mapsEmbedUrl, mapsLinkUrl, pageMeta } from "@/lib/site";
 
-export const metadata = {
+export const metadata = pageMeta({
   title: "Contact",
-  description: `Find Tavern by the Sea at ${addressLine}. Hours, directions, parking and private events.`,
-  alternates: { canonical: "/contact" },
-};
+  description: `Find Tavern by the Sea at ${addressLine}. Hours, directions, parking, dock space and private events on Wickford Cove.`,
+  path: "/contact",
+});
 
 export default function ContactPage() {
   return (

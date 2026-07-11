@@ -3,14 +3,14 @@ import Reveal from "@/components/Reveal";
 import PageHero from "@/components/PageHero";
 import { ScallopMark } from "@/components/Logo";
 import { Button, Section, SectionHeading } from "@/components/ui";
-import { site } from "@/lib/site";
+import { site, pageMeta } from "@/lib/site";
 import { photo } from "@/lib/photos";
 
-export const metadata = {
+export const metadata = pageMeta({
   title: "Our Story",
-  description: `Tavern by the Sea has cooked Mediterranean food on the water in Wickford, Rhode Island since ${site.established}.`,
-  alternates: { canonical: "/story" },
-};
+  description: `Tavern by the Sea has cooked Mediterranean food on the water in Wickford, Rhode Island since ${site.established} — two waterfront patios, fish from Point Judith, and a Greek-rooted kitchen.`,
+  path: "/story",
+});
 
 const values = [
   {

@@ -3,13 +3,13 @@ import PageHero from "@/components/PageHero";
 import Reveal from "@/components/Reveal";
 import OpenTableWidget from "@/components/OpenTableWidget";
 import { Button, Section, SectionHeading } from "@/components/ui";
-import { site, external } from "@/lib/site";
+import { site, external, pageMeta } from "@/lib/site";
 
-export const metadata = {
+export const metadata = pageMeta({
   title: "Reservations",
   description: `Book a table at Tavern by the Sea in ${site.town}. Waterfront patios, a full bar, and Mediterranean cooking since ${site.established}.`,
-  alternates: { canonical: "/reservations" },
-};
+  path: "/reservations",
+});
 
 const notes = [
   {

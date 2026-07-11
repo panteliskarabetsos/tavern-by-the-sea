@@ -4,15 +4,15 @@ import Reveal from "@/components/Reveal";
 import PageHero from "@/components/PageHero";
 import { Wave } from "@/components/Logo";
 import { ReserveButton, Section } from "@/components/ui";
-import { site } from "@/lib/site";
+import { site, pageMeta } from "@/lib/site";
 import { photo } from "@/lib/photos";
 
-export const metadata = {
-  title: "The Patios & Bar",
+export const metadata = pageMeta({
+  title: "Waterfront Patios & Bar",
   description:
     "Two waterfront patios and a full bar in Wickford, Rhode Island. The upper patio for the long view, the lower for the sound of the water.",
-  alternates: { canonical: "/patios" },
-};
+  path: "/patios",
+});
 
 const spaces = [
   {
@@ -61,7 +61,7 @@ export default function PatiosPage() {
     <>
       <PageHero
         eyebrow="Where to sit"
-        title="Two patios, one cove"
+        title="Two waterfront patios, one cove"
         blurb="Both face the water. Choosing between them is the only difficult thing about eating here."
         src="/images/hero-aerial.jpg"
       />

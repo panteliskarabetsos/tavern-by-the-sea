@@ -114,8 +114,14 @@ Two decisions that keep it there:
 
 Driven off `siteUrl` and the `site` config, so updating those keeps SEO in sync.
 
-- **Per-page metadata** — unique `<title>`, description, and self-referencing
-  canonical on every route (`title.template` in `layout.js` appends the brand).
+- **Per-page metadata** — every route calls `pageMeta()` from `src/lib/site.js`,
+  which emits a unique `<title>`, description, self-referencing canonical, and
+  matching per-page `og:url`/`og:description` in one place. (A page-level
+  `openGraph` replaces the root one wholesale in the App Router, so the helper
+  re-supplies `siteName`/`locale`/`type` — don't hand-write `openGraph` on pages.)
+- **Menu structured data** — `/menu` emits a schema.org `Menu` (sections, dishes,
+  prices) generated from `src/lib/menu.js`, so it can never drift from the
+  rendered menu. Market-priced dishes omit the offer rather than invent a number.
 - **Structured data** — a full `Restaurant` JSON-LD block in `layout.js`:
   address, **geo coordinates**, `openingHoursSpecification` (Monday omitted =
   closed), `servesCuisine`, `priceRange`, `hasMenu`, `acceptsReservations` +

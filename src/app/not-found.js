@@ -1,7 +1,12 @@
 import { ScallopMark } from "@/components/Logo";
 import { Button } from "@/components/ui";
 
-export const metadata = { title: "Page not found" };
+export const metadata = {
+  title: "Page not found",
+  // Next injects its own noindex for not-found; without this the root layout's
+  // robots (index, follow) ALSO renders and the page emits two conflicting tags.
+  robots: { index: false, follow: false },
+};
 
 export default function NotFound() {
   return (
